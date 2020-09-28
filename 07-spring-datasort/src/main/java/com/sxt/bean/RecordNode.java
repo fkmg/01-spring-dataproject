@@ -28,4 +28,12 @@ public class RecordNode {
 
     public RecordNode() {
     }
+
+    @Override
+    public String toString() {
+        return "RecordNode{" +
+                "key=" + key +
+                ", element=" + element +
+                '}';
+    }
 }

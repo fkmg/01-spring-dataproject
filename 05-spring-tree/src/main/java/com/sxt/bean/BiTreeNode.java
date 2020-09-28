@@ -46,4 +46,13 @@ public class BiTreeNode{
     public void setRchild(BiTreeNode rchild) {
         this.rchild = rchild;
     }
+
+    @Override
+    public String toString() {
+        return "BiTreeNode{" +
+                "data=" + data +
+                ", lchild=" + lchild +
+                ", rchild=" + rchild +
+                '}';
+    }
 }
