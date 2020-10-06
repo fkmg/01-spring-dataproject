@@ -90,11 +90,11 @@ public class LinkList implements IList {
         int j=0;
         Node p=head;
         //Node q;不必要的
-        while(p!=null&&j<i-1){
+        while(p!=null&&j<i){
             p=p.next;
             j++;
         }
-        if(j>=i||p==null){//j>i说明i<0
+        if(j>i||p==null){//j>i说明i<0
             throw new Exception("要删除的点不存在");
         }
         //q=p.next;//q=p.next;

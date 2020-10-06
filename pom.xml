@@ -16,6 +16,8 @@
     </properties>
 
     <modules>
+        <module>01-spring-list</module>
+        <module>02-spring-stacks</module>
         <module>05-spring-tree</module>
         <module>07-spring-datasort</module>
         <module>09-data-search</module>
