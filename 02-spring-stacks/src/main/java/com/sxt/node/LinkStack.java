@@ -49,4 +49,15 @@ public class LinkStack implements IStack {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        String result = "";
+        Node p = this.top;
+        while (p != null){
+            result = String.valueOf(p.data).concat(result);
+            p = p.next;
+        }
+        return result;
+    }
 }

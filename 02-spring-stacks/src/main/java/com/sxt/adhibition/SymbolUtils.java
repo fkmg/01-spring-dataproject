@@ -5,6 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Scanner;
 
+/**
+ * 验证表达式格式的正确性
+ */
 public class SymbolUtils {
 
     //记录分割符为左分割符

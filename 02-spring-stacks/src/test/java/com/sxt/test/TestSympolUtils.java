@@ -1,5 +1,6 @@
 package com.sxt.test;
 
+import com.sxt.adhibition.SignificantDigits;
 import com.sxt.adhibition.SymbolUtils;
 import org.junit.Test;
 
@@ -33,5 +34,30 @@ public class TestSympolUtils {
                 break;
             }
         }
+    }
+
+    @Test
+    public void testAdd() throws Exception{
+        SignificantDigits digits = new SignificantDigits();
+        String x1 = "18 452 543 389 943 209 752 345 473";
+        String x4 = "18 452 543 389 943 209 752 345 473";
+        String x2 = "8 123 542 678 432 986 899 334";
+
+        String x3 = "18444419847264776765446139";
+        String add = digits.add(x3, x2);
+        System.out.println("两个大整数的和为: "+add);
+    }
+
+    @Test
+    public void testSubstract() throws Exception{
+        SignificantDigits digits = new SignificantDigits();
+        String x1 = "18 452 543 389 943 209 752 345 473";
+        String x3 = "18 452 543 389 943 209 752 345 471";
+        String x2 = "8 123 542 678 432 986 899 334";
+        //String add = digits.add(x1, x2);
+        //System.out.println("x1 - x3: "+digits.minus(x1,x3));
+        //System.out.println("x3 - x1: "+digits.minus(x3,x1));
+        System.out.println("x1 - x2: "+digits.minus(x1,x2));
+        System.out.println("x2 - x1: "+digits.minus(x2,x1));
     }
 }
