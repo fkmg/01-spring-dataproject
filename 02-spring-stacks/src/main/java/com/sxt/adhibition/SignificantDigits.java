@@ -1,6 +1,6 @@
 package com.sxt.adhibition;
 
-import com.sxt.node.LinkStack;
+import com.sxt.stack.LinkStack;
 import org.apache.commons.lang3.StringUtils;
 
 /**

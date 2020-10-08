@@ -1,4 +1,4 @@
-package com.sxt.node;
+package com.sxt.stack;
 
 public class SqStack implements IStack {
 

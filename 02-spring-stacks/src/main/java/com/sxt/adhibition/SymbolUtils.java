@@ -1,6 +1,6 @@
 package com.sxt.adhibition;
 
-import com.sxt.node.SqStack;
+import com.sxt.stack.SqStack;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Scanner;
