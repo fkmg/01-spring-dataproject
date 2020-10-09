@@ -16,11 +16,15 @@
     </properties>
 
     <modules>
+        <!--数据结构-->
         <module>01-spring-list</module>
         <module>02-spring-stacks</module>
         <module>05-spring-tree</module>
         <module>07-spring-datasort</module>
         <module>09-data-search</module>
+
+        <!--算法设计与分析-->
+        <module>10-spring-recursionAndDichotomy</module>
     </modules>
 
 
