@@ -1,9 +1,13 @@
 package com.sxt.test;
 
 import com.sxt.divide.DivideAndConquer;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 public class TestDivideAndConquer {
 
@@ -40,6 +44,123 @@ public class TestDivideAndConquer {
         //验证:
         conquer.binarySearch(persions,search,persions.length);
         System.out.println("game over!");
+    }
+
+    @Test
+    public void testMergeSort() throws Exception{
+        DivideAndConquer<Persion> divideAndConquer = new DivideAndConquer<Persion>(new Comparator<Persion>() {
+            public int compare(Persion o1, Persion o2) {
+                return o1.getAge() - o2.getAge();
+            }
+        });
+        Random random = new Random();
+        Persion[] persions = new Persion[10];
+        for(int i = 0; i< persions.length;i++){
+            persions[i] = new Persion(random.nextInt(10)*10+1,"小".concat(String.valueOf(i)));
+        }
+        divideAndConquer.MergeSort(persions);
+        for(int i = 0; i< persions.length;i++){
+            System.out.println(persions[i]);
+        }
+    }
+
+    @Test
+    public void testQuickSort(){
+        DivideAndConquer<Persion> divideAndConquer = new DivideAndConquer<Persion>(new Comparator<Persion>() {
+            public int compare(Persion o1, Persion o2) {
+                return o1.getAge() - o2.getAge();
+            }
+        });
+        Random random = new Random();
+        Persion[] persions = new Persion[10];
+        for(int i = 0; i< persions.length;i++){
+            persions[i] = new Persion(random.nextInt(100)*10+1,"小".concat(String.valueOf(i)));
+        }
+        divideAndConquer.quickSort(persions,0,persions.length-1);
+        for(int i = 0; i< persions.length;i++){
+            System.out.println(persions[i]);
+        }
+    }
+
+    @Test
+    public void testRandomizedQuickSort(){
+        DivideAndConquer<Persion> divideAndConquer = new DivideAndConquer<Persion>(new Comparator<Persion>() {
+            public int compare(Persion o1, Persion o2) {
+                return o1.getAge() - o2.getAge();
+            }
+        });
+        Random random = new Random();
+        Persion[] persions = new Persion[10];
+        for(int i = 0; i< persions.length;i++){
+            persions[i] = new Persion(random.nextInt(100)*10+1,"小".concat(String.valueOf(i)));
+        }
+        divideAndConquer.radomizedQuickSort(persions,0,persions.length-1);
+        for(int i = 0; i< persions.length;i++){
+            System.out.println(persions[i]);
+        }
+    }
+
+    @Test
+    public void testRandomizedSelected(){
+        DivideAndConquer<Persion> divideAndConquer = new DivideAndConquer<Persion>(new Comparator<Persion>() {
+            public int compare(Persion o1, Persion o2) {
+                return o1.getAge() - o2.getAge();
+            }
+        });
+        Random random = new Random();
+        Persion[] persions = new Persion[10];
+        for(int i = 0; i< persions.length;i++){
+            persions[i] = new Persion(random.nextInt(100)*10+1,"小".concat(String.valueOf(i)));
+            System.out.println(persions[i]);
+        }
+        Persion persion = divideAndConquer.randomizedSelect(persions, 0, persions.length - 1, 6);
+        divideAndConquer.radomizedQuickSort(persions,0,persions.length-1);
+        for(int i = 0; i< persions.length;i++){
+            System.out.println(persions[i]);
+        }
+        
+        System.out.println("最终结果为:"+persion);
+    }
+
+    @Test
+    public void testRandomizedSelecteds(){
+        DivideAndConquer<Persion> divideAndConquer = new DivideAndConquer<Persion>(new Comparator<Persion>() {
+            public int compare(Persion o1, Persion o2) {
+                return o1.getAge() - o2.getAge();
+            }
+        });
+        Random random = new Random();
+        Persion[] persions = new Persion[10];
+        for(int i = 0; i< persions.length;i++){
+            persions[i] = new Persion(random.nextInt(100)*10+1,"小".concat(String.valueOf(i)));
+            System.out.println(persions[i]);
+        }
+        Persion persion = divideAndConquer.randomizedSelects(persions, 0, persions.length - 1, 6);
+        divideAndConquer.radomizedQuickSort(persions,0,persions.length-1);
+        for(int i = 0; i< persions.length;i++){
+            System.out.println(persions[i]);
+        }
+
+        System.out.println("最终结果为:"+persion);
+    }
+
+    @Test
+    public void testRandom(){
+        List<Integer> list = new ArrayList<Integer>();
+        Random random = new Random();
+        for(int i = 0; i< 10000;i++){
+            int x = random.nextInt(16)+10;
+            System.out.print(x+"\t");
+            if((i+1)%15 == 0){
+                System.out.println();
+            }
+            if(x>25){
+                list.add(x);
+            }
+
+        }
+
+        System.out.println(StringUtils.join(list));
     }
 
 }
