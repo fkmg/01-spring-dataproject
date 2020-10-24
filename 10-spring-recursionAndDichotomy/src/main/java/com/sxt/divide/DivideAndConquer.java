@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 
 import java.lang.reflect.Array;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -12,10 +14,13 @@ import java.util.Random;
  * 2、合并排序
  * 3、快速排序
  * 4、线性选择
+ * 5、线性时间选择
  */
 public class DivideAndConquer<T>{
 
     private Logger log = Logger.getLogger(DivideAndConquer.class);
+
+    private DivideUtils divideUtils = new DivideUtils();
 
     /**
      * The comparator used to maintain order in this tree map, or
@@ -140,7 +145,7 @@ public class DivideAndConquer<T>{
      * @param m
      * @param r
      */
-    private void Merge(T[] c,T[] d,int l,int m,int r) throws Exception {
+    public void Merge(T[] c,T[] d,int l,int m,int r) throws Exception {
         int i =l,j=m+1,k=l,compare=0,q=0,w=0;
         while (i<=m && j<=r){
             try {
@@ -319,6 +324,208 @@ public class DivideAndConquer<T>{
         }else {
             return randomizedSelects(a,i+1,r,k-j);
         }
+    }
+
+    /**
+     * 线性时间选择
+     * @param a
+     * @param p
+     * @param r
+     * @param k
+     */
+    public T Select(T[] a,int p,int r,int k){
+        int t=0,s=0;
+
+        //对元素进行快速排序
+        if(p-r<75){
+            //快速排序
+            radomizedQuickSort(a,p,r);
+            return a[p+k-1];
+        }
+
+        //对数组进行分组(每组5个数,并选取每组数的中位数放置在[p-(p+n/5-1)])
+        for(int i = 0; i<= (r-p-4)/5;i++){
+            //冒泡排序，从后开始排，结果使得后三个数是排好顺序的（递增）
+            s = p+5*i;
+            t = s+4;
+            boolean flag = false;
+            for(int j=0; j<3; j++) {
+                for(int n=s; n<t-j; n++) {
+                    if(comapareVaLues(a[n],a[n+1])>0){
+                        Swap(a,n,n-1);
+                        flag = true;
+                    }
+                }
+
+                if(!flag){
+                    break;
+                }
+            }
+            //交换每组中的中位数到前面
+            Swap(a,p+i,s+2);
+        }
+        //(r-p-4)/5表示组数-1，则[p,p+(r-p-4)/5]的区间长度等于组数
+        T x= Select(a,p,p+(r-p-4)/5,(r-p+1)/10);//求中位数的中位数
+        int i=Partition(a,p,r,x),j=i-p+1;
+        if(k<=j)return Select(a,p,i,k);
+        else return Select(a,i+1,r,k-j);
+    }
+
+    /**
+     * 插入排序了利用监视器
+     * 此算法是不稳定的
+     * @param a
+     */
+    public void insertSort(T[] a){
+        int low = 0,high=0,middle=0,index=0,j=0;
+        T x = null ;
+        //从第一个位置开始
+        for(int i=1;i<a.length;i++){//外曾循环控制排序的次数
+            //x待插入数
+            x= a[i];
+            low = 0;
+            high = i-1;
+            if(comapareVaLues(a[high],x)>0){
+                //1、查找插入位置
+                index = binarySearchInsertIndex(a,x,high);
+                //2、移动元素
+                j = i;
+                while (j>index){
+                    a[j] = a[--j];
+                }
+
+                //将元素插入到该位置
+                a[index] = x;
+            }
+        }
+    }
+
+    /**
+     * 二分搜索法,T必须重写equals方法
+     * @param a(从数组 a 0-n位置查询元素x的位置,若存在返回位置+1,若不存在插入最终high处)
+     * @param x
+     * @return
+     */
+    public int binarySearchInsertIndex(T[] a,T x,int n){
+        //0、首先验证是否实现了comapareable接口
+        compare(x,x);
+        //1、获取数组中点
+        int left = 0,right = n-1 ,middle = 0, compare = 0;
+        while (left <= right){
+            middle = (left+right)/2;
+            compare = comapareVaLues(a[middle],x);
+            if(compare == 0){
+                return middle+1;
+            }else if(compare > 0){
+                right = middle-1;
+            }else {
+                left = middle+1;
+            }
+        }
+        //未查询到
+        return left;
+    }
+
+    /**
+     * 选定位置的快速排序
+     * @param a
+     * @param p
+     * @param r
+     * @param val
+     * @return
+     */
+    int Partition(T a[],int p,int r,T val)
+    {
+        int pos = p;
+        for(int q=p; q<=r; q++) {
+            if(comapareVaLues(a[q],val)==0) {
+                pos=q;
+                break;
+            }
+        }
+        Swap(a,p,pos);
+
+        int i = p,j = r+1;
+        //1、确定基准元素
+        T x = a[p];
+        while (true){
+            while (comapareVaLues(a[++i],x)<0 && i<r);
+            while (comapareVaLues(a[--j],x)>0);
+            if (i >= j) {
+                break;
+            }
+            Swap(a,i,j);
+        }
+        a[p] = a[j];
+        a[j] = x;
+
+        return j;
+    }
+
+    /**
+     * 合并两半有序数组
+     * @param a
+     * @param begin
+     * @param k （begin:k-1）（k：end） 两组
+     * @param end
+     */
+    public void combineArray(T[] a,int begin,int k,int end){
+        int i = begin,sm=k,index = k,len = 0;
+        for(int j = k; j<=end ;){
+            //第一步:找到左边比右边a[j]元素大的位置
+            while (i<sm&&comapareVaLues(a[i],a[j])<=0){
+                i++;
+            }
+            //左边元素皆小于a[j]说明数组已经有序
+            if (i>= sm){
+                break;
+            }
+            //第二步寻找右边比a[i]元素小的所有元素
+            index = j++;
+            while (j<=end && comapareVaLues(a[i],a[j])>0){
+                j++;
+            }
+
+            //第三步:交换位置
+            len=sm-i;
+            divideUtils.RightRotate(a,i,j-1,len);
+            //重新定位sm与左边元素的位置
+            sm = j;
+            i=i+j-index+1;
+        }
+    }
+
+    /**
+     * 计算数组a内的众数
+     * @param a
+     * @param begin
+     * @param end
+     * @return
+     */
+    public Map<String,Object> calculateMode(T[] a, int begin, int end){
+        //1、对元素进行排序
+        Map<String,Object> result = new HashMap();
+        int count = 1;
+        int maxCount = 0;
+        T obj = null;
+        T mode = null;
+        quickSort(a,begin,end);
+
+        for(int i = begin; i<=end ;){
+            obj = a[i];
+            count = 1;
+            while (++i<=end&&comapareVaLues(obj,a[i]) == 0){
+                count++;
+            }
+            if(count>maxCount){
+                mode = obj;
+                maxCount = count;
+            }
+        }
+
+        result.put("mode",mode);
+        result.put("num",maxCount);
+        return result;
     }
 
 }
