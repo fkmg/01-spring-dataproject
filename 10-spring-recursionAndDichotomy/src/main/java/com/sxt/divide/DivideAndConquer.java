@@ -15,6 +15,7 @@ import java.util.Random;
  * 3、快速排序
  * 4、线性选择
  * 5、线性时间选择
+ * 6、排列的字典序问题
  */
 public class DivideAndConquer<T>{
 
@@ -526,6 +527,74 @@ public class DivideAndConquer<T>{
         result.put("mode",mode);
         result.put("num",maxCount);
         return result;
+    }
+
+    /**
+     * 求阶乘
+     * @param n
+     * @return
+     */
+    public int fib(int n){
+        int result = 1;
+        if(n<=1){
+            result = 1;
+        }else {
+            for(int i =n; i>0;i--){
+                result*=i;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * 求取当前排列在字典排序中的位置
+     * @param data
+     * @param n
+     * @return
+     */
+    public int getOrder(T[] data,int n){
+        int result = 0;
+        int cnt = 0;
+        T item = null;
+        for(int i = 0; i< n;i++){
+            item = data[i];
+            cnt = 0;
+            for(int j = i+1; j< n;j++){
+                if(comapareVaLues(item,data[j])>0){
+                    cnt++;
+                }
+            }
+            result+=cnt*fib(n-i-1);
+        }
+
+        return result;
+    }
+
+    public void next_perm(T[] data,int n){
+        //1、从右至左访问数组找出首个data[i}<data[i+1]位置
+        int index = 0;
+        int maxIndex = 0;
+        T item = null;
+        for(int i = n-1; i>0;i--){
+            if(comapareVaLues(data[i-1],data[i])<0){
+                index = i-1;
+                break;
+            }
+        }
+        //2、找出右边首个大于item的元素
+        item = data[index];
+        for(int i = n-1; i>0;i--){
+            if (comapareVaLues(item,data[i])<0){
+                maxIndex = i;
+                break;
+            }
+        }
+
+        //3、交换位置
+        Swap(data,index,maxIndex);
+        //4、反转index+1 - length
+        divideUtils.reverse(data,index+1,n-1);
     }
 
 }

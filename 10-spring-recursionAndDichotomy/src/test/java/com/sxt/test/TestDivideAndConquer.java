@@ -230,6 +230,17 @@ public class TestDivideAndConquer {
         board = hamilton.getBoard();
     }
 
+    @Test
+    public void testGetOrder(){
+        String str = "2,6,4,5,8,1,7,3";
+        String[] split = str.split(",");
+        DivideAndConquer<String> divideAndConquer = new DivideAndConquer<>();
+        int order = divideAndConquer.getOrder(split, split.length);
+        System.out.println(str+"的位数为:"+order);
+        divideAndConquer.next_perm(split,split.length);
+        System.out.println("下一个序列为"+StringUtils.join(split));
+    }
+
 }
 
 class Persion {
